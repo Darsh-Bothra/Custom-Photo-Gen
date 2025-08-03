@@ -65,6 +65,11 @@
         </label>
 
         <label>
+            Designation: <br />
+            <input type="text" id="designationInput" placeholder="Enter your designation" />
+        </label>
+
+        <label>
             Upload Your Photo: <br />
             <input type="file" id="photoInput" accept="image/*" />
         </label>
@@ -73,6 +78,7 @@
     </div>
 
     <canvas id="finalCanvas" width="1086" height="1536" style="display:none;"></canvas>
+
 
 
     <script>
@@ -100,6 +106,7 @@
 
         document.getElementById("generateBtn").addEventListener("click", () => {
             const name = document.getElementById("nameInput").value || "";
+            const designation = document.getElementById("designationInput").value || "";
 
             baseImage.onload = () => {
                 ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
@@ -109,32 +116,34 @@
                     const imgHeight = 150;
                     const padding = 30;
                     const x = canvas.width - imgWidth - padding;
-                    const y = canvas.height - imgHeight - 80;
+                    const y = canvas.height - imgHeight - 120;
 
-                    // Draw photo
+                    // Draw user photo
                     ctx.drawImage(userPhoto, x, y, imgWidth, imgHeight);
 
                     // Draw name
-                    ctx.font = "bold 24px sans-serif";
+                    ctx.font = "bold 32px sans-serif";
                     ctx.fillStyle = "white";
                     ctx.textAlign = "center";
                     ctx.fillText(name, x + imgWidth / 2, y + imgHeight + 30);
-                    ctx.font = "20px sans-serif";
-                    ctx.fillText("BJP Karyakarta", x + imgWidth / 2, y + imgHeight + 50);
+
+                    // Draw designation below name
+                    ctx.font = "28px sans-serif";
+                    ctx.fillText(designation, x + imgWidth / 2, y + imgHeight + 65);
                 }
 
-                // Show canvas and trigger download
                 canvas.style.display = "block";
                 const link = document.createElement("a");
-                link.download = `${name}.jpg`;
+                link.download = "final_image.jpg";
                 link.href = canvas.toDataURL("image/jpeg");
                 link.click();
             };
 
             if (baseImage.complete) {
-                baseImage.onload(); // call manually if already loaded
+                baseImage.onload(); // trigger if already loaded
             }
         });
+
     </script>
 </body>
 
