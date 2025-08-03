@@ -104,6 +104,23 @@
             reader.readAsDataURL(file);
         });
 
+        // Helper to draw text with font size adjustment
+        function drawFittedText(text, maxWidth, startX, startY, initialFontSize, isBold = false) {
+            let fontSize = initialFontSize;
+            let fontStyle = `${isBold ? "bold " : ""}${fontSize}px sans-serif`;
+            ctx.font = fontStyle;
+
+            // Shrink font until it fits within maxWidth
+            while (ctx.measureText(text).width > maxWidth && fontSize > 10) {
+                fontSize -= 1;
+                fontStyle = `${isBold ? "bold " : ""}${fontSize}px sans-serif`;
+                ctx.font = fontStyle;
+            }
+
+            ctx.fillText(text, startX, startY);
+        }
+
+
         document.getElementById("generateBtn").addEventListener("click", () => {
             const name = document.getElementById("nameInput").value || "";
             const designation = document.getElementById("designationInput").value || "";
@@ -117,19 +134,20 @@
                     const padding = 30;
                     const x = canvas.width - imgWidth - padding;
                     const y = canvas.height - imgHeight - 120;
+                    const textMaxWidth = 180;
 
                     // Draw user photo
                     ctx.drawImage(userPhoto, x, y, imgWidth, imgHeight);
 
-                    // Draw name
-                    ctx.font = "bold 32px sans-serif";
+                    // Set up text styles
                     ctx.fillStyle = "white";
                     ctx.textAlign = "center";
-                    ctx.fillText(name, x + imgWidth / 2, y + imgHeight + 30);
+
+                    // Draw name (centered above designation)
+                    drawFittedText(name, textMaxWidth, x + imgWidth / 2, y + imgHeight + 30, 32, true);
 
                     // Draw designation below name
-                    ctx.font = "28px sans-serif";
-                    ctx.fillText(designation, x + imgWidth / 2, y + imgHeight + 65);
+                    drawFittedText(designation, textMaxWidth, x + imgWidth / 2, y + imgHeight + 65, 28);
                 }
 
                 canvas.style.display = "block";
@@ -140,8 +158,9 @@
             };
 
             if (baseImage.complete) {
-                baseImage.onload(); // trigger if already loaded
+                baseImage.onload();
             }
+
         });
 
     </script>
