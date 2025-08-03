@@ -1,88 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <title>Attach Name & Photo</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 20px;
-    }
-    canvas {
-      border: 1px solid #ccc;
-      display: block;
-      margin-top: 20px;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <title>Attach Name & Photo</title>
+    <style>
+  body {
+    font-family: sans-serif;
+    padding: 20px;
+  }
+
+  input[type="file"],
+  input[type="text"] {
+    font-size: 18px;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+
+  #generateBtn,
+  #photoInput {
+    padding: 10px 20px;
+    font-size: 18px;
+    /* background-color: #ff9900; */
+    color: black;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  #generateBtn:hover {
+    background-color: #e07b00;
+  }
+
+  canvas {
+    border: 1px solid #ccc;
+    display: block;
+    margin-top: 20px;
+  }
+</style>
+
 </head>
+
 <body>
 
-<h2>Attach Your Photo & Name to Image</h2>
+    <h2>Attach Your Photo & Name to Image</h2>
 
-<label>Name: <input type="text" id="nameInput" /></label><br><br>
-<label>Upload Your Photo: <input type="file" id="photoInput" accept="image/*" /></label><br><br>
-<button id="generateBtn">Generate & Download</button>
+    <label>Name: <input type="text" id="nameInput" /></label><br><br>
+    <label>Upload Your Photo: <input type="file" id="photoInput" accept="image/*" /></label><br><br>
+    <button id="generateBtn">Generate & Download</button>
 
-<canvas id="finalCanvas" width="1086" height="1536" style="display:none;"></canvas>
+    <canvas id="finalCanvas" width="1086" height="1536" style="display:none;"></canvas>
 
-<script>
-  const canvas = document.getElementById("finalCanvas");
-  const ctx = canvas.getContext("2d");
+    <script>
+        const canvas = document.getElementById("finalCanvas");
+        const ctx = canvas.getContext("2d");
 
-  const baseImage = new Image();
-  baseImage.src = "assets/Railway Aabhar.png"; // We'll handle this in a second.
+        const baseImage = new Image();
+        baseImage.src = "assets/Railway Aabhar.png";
 
-  let userPhoto = null; 
+        let userPhoto = null;
 
-  document.getElementById("photoInput").addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function (event) {
-      userPhoto = new Image();
-      userPhoto.onload = () => {
-        console.log("User photo loaded.");
-      };
-      userPhoto.src = event.target.result;
-    };
-    reader.readAsDataURL(file);
-  });
+        document.getElementById("photoInput").addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                userPhoto = new Image();
+                userPhoto.onload = () => {
+                    console.log("User photo loaded.");
+                };
+                userPhoto.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
 
-  document.getElementById("generateBtn").addEventListener("click", () => {
-    const name = document.getElementById("nameInput").value || "";
+        document.getElementById("generateBtn").addEventListener("click", () => {
+            const name = document.getElementById("nameInput").value  || "";
 
-    baseImage.onload = () => {
-      ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
+            baseImage.onload = () => {
+                ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
 
-      if (userPhoto) {
-        const imgWidth = 150;
-        const imgHeight = 150;
-        const padding = 30;
-        const x = canvas.width - imgWidth - padding;
-        const y = canvas.height - imgHeight - 80;
+                if (userPhoto) {
+                    const imgWidth = 150;
+                    const imgHeight = 150;
+                    const padding = 30;
+                    const x = canvas.width - imgWidth - padding;
+                    const y = canvas.height - imgHeight - 80;
 
-        // Draw photo
-        ctx.drawImage(userPhoto, x, y, imgWidth, imgHeight);
+                    // Draw photo
+                    ctx.drawImage(userPhoto, x, y, imgWidth, imgHeight);
 
-        // Draw name
-        ctx.font = "bold 24px sans-serif";
-        ctx.fillStyle = "white";
-        ctx.textAlign = "center";
-        ctx.fillText(name, x + imgWidth / 2, y + imgHeight + 30);
-      }
+                    // Draw name
+                    ctx.font = "bold 24px sans-serif";
+                    ctx.fillStyle = "white";
+                    ctx.textAlign = "center";
+                    ctx.fillText(name, x + imgWidth / 2, y + imgHeight + 30);
+                    ctx.font = "20px sans-serif";
+                    ctx.fillText("BJP Karyakarta", x + imgWidth / 2, y + imgHeight + 50);
+                }
 
-      // Show canvas and trigger download
-      canvas.style.display = "block";
-      const link = document.createElement("a");
-      link.download = `${name}.jpg`;
-      link.href = canvas.toDataURL("image/jpeg");
-      link.click();
-    };
+                // Show canvas and trigger download
+                canvas.style.display = "block";
+                const link = document.createElement("a");
+                link.download = `${name}.jpg`;
+                link.href = canvas.toDataURL("image/jpeg");
+                link.click();
+            };
 
-    if (baseImage.complete) {
-      baseImage.onload(); // call manually if already loaded
-    }
-  });
-</script>
+            if (baseImage.complete) {
+                baseImage.onload(); // call manually if already loaded
+            }
+        });
+    </script>
 </body>
+
 </html>
+
+
+
