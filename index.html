@@ -5,53 +5,73 @@
     <meta charset="UTF-8" />
     <title>Attach Name & Photo</title>
     <style>
-  body {
-    font-family: sans-serif;
-    padding: 20px;
-  }
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            text-align: center;
+            background-color: #f5f5f5;
+        }
 
-  input[type="file"],
-  input[type="text"] {
-    font-size: 18px;
-    padding: 10px;
-    margin-top: 10px;
-    margin-bottom: 20px;
-  }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
 
-  #generateBtn,
-  #photoInput {
-    padding: 10px 20px;
-    font-size: 18px;
-    /* background-color: #ff9900; */
-    color: black;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
+        input[type="text"],
+        input[type="file"] {
+            font-size: 18px;
+            padding: 10px;
+            width: 280px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
 
-  #generateBtn:hover {
-    background-color: #e07b00;
-  }
+        #generateBtn {
+            padding: 14px 28px;
+            font-size: 18px;
+            background-color: #ff9900;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
 
-  canvas {
-    border: 1px solid #ccc;
-    display: block;
-    margin-top: 20px;
-  }
-</style>
+        #generateBtn:hover {
+            background-color: #e07b00;
+        }
+
+        canvas {
+            border: 1px solid #ccc;
+            margin-top: 30px;
+        }
+    </style>
+
 
 </head>
 
 <body>
 
-    <h2>Attach Your Photo & Name to Image</h2>
+    <div class="container">
+        <label>
+            Name: <br />
+            <input type="text" id="nameInput" placeholder="Enter your name" />
+        </label>
 
-    <label>Name: <input type="text" id="nameInput" /></label><br><br>
-    <label>Upload Your Photo: <input type="file" id="photoInput" accept="image/*" /></label><br><br>
-    <button id="generateBtn">Generate & Download</button>
+        <label>
+            Upload Your Photo: <br />
+            <input type="file" id="photoInput" accept="image/*" />
+        </label>
+
+        <button id="generateBtn">Generate & Download</button>
+    </div>
 
     <canvas id="finalCanvas" width="1086" height="1536" style="display:none;"></canvas>
+
 
     <script>
         const canvas = document.getElementById("finalCanvas");
@@ -77,7 +97,7 @@
         });
 
         document.getElementById("generateBtn").addEventListener("click", () => {
-            const name = document.getElementById("nameInput").value  || "";
+            const name = document.getElementById("nameInput").value || "";
 
             baseImage.onload = () => {
                 ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
@@ -117,6 +137,3 @@
 </body>
 
 </html>
-
-
-
